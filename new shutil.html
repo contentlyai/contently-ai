@@ -1,0 +1,193 @@
+import shutil
+import zipfile
+from pathlib import Path
+
+# Define the directory structure for the advanced website
+base_dir = Path("/mnt/data/contently_ai_website")
+assets_dir = base_dir / "assets"
+images_dir = assets_dir / "images"
+
+# Ensure the directory structure exists
+images_dir.mkdir(parents=True, exist_ok=True)
+
+# Sample content for index.html
+index_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Contently AI - AI-Powered Content Creation and Automation Services">
+    <meta name="google-site-verification" content="JpN_nN-GiOAzsdCloLlkdB_-V9C0NDL1b-bysP3SyWM" />
+    <title>Contently AI</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <img src="assets/images/logo.png" alt="Contently AI Logo" class="logo" />
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Welcome to Contently AI</h1>
+        <p>Your all-in-one AI solution for content creation and automation.</p>
+    </main>
+    <footer>
+        <p>© 2025 Contently AI</p>
+    </footer>
+</body>
+</html>
+"""
+
+# Sample content for style.css
+style_css = """
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    color: #333;
+}
+header {
+    background: #6C63FF;
+    color: white;
+    padding: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+nav a {
+    color: white;
+    margin: 0 1em;
+    text-decoration: none;
+}
+.logo {
+    height: 40px;
+}
+main {
+    padding: 2em;
+}
+footer {
+    background: #eee;
+    text-align: center;
+    padding: 1em;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+"""
+
+# Sample contact.html file
+contact_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact - Contently AI</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <img src="assets/images/logo.png" alt="Contently AI Logo" class="logo" />
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Contact Us</h1>
+        <form name="contact" method="POST" data-netlify="true">
+            <input type="text" name="name" placeholder="Your Name" required />
+            <input type="email" name="email" placeholder="Your Email" required />
+            <textarea name="message" placeholder="Your Message" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </main>
+    <footer>
+        <p>© 2025 Contently AI</p>
+    </footer>
+</body>
+</html>
+"""
+
+# Sample blog.html file
+blog_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog - Contently AI</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <img src="assets/images/logo.png" alt="Contently AI Logo" class="logo" />
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Latest Articles</h1>
+        <article>
+            <h2>5 AI Tools That Can Save You Hours</h2>
+            <p>Discover the top tools we use for content automation...</p>
+        </article>
+    </main>
+    <footer>
+        <p>© 2025 Contently AI</p>
+    </footer>
+</body>
+</html>
+"""
+
+# Sample sitemap.xml
+sitemap_xml = """
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://contentlyaii-india.netlify.app/</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://contentlyaii-india.netlify.app/blog.html</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://contentlyaii-india.netlify.app/contact.html</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+</urlset>
+"""
+
+# Sample robots.txt
+robots_txt = """
+User-agent: *
+Allow: /
+Sitemap: https://contentlyaii-india.netlify.app/sitemap.xml
+"""
+
+# Write the files to disk
+(base_dir / "index.html").write_text(index_html)
+(base_dir / "style.css").write_text(style_css)
+(base_dir / "contact.html").write_text(contact_html)
+(base_dir / "blog.html").write_text(blog_html)
+(base_dir / "sitemap.xml").write_text(sitemap_xml)
+(base_dir / "robots.txt").write_text(robots_txt)
+
+# Copy logo image into the folder (previously generated)
+shutil.copy("/mnt/data/A_logo_for_\"Contently_AI\"_is_displayed_on_a_light,.png", images_dir / "logo.png")
+
+# Create a zip file of the entire website
+zip_path = "/mnt/data/ContentlyAI_Final_Website.zip"
+shutil.make_archive(zip_path.replace(".zip", ""), 'zip', base_dir)
+
+zip_path  # Return the zip path for download link
+
